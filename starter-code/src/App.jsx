@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import foods from "./foods.json";
 import "./components/FoodBox";
 import FoodBox from "./components/FoodBox";
+import Search from "./components/Search";
 
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -73,6 +74,8 @@ class App extends Component {
     return (
       <div className="App">
         <h2>Iron Nutrition</h2>
+
+        <Search />
 
         {/* <AddFood /> */}
 

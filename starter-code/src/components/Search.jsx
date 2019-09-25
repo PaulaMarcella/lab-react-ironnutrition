@@ -8,7 +8,7 @@ class Search extends Component {
     super(props);
     this.state = {
       query: "",
-      newFoods: [],
+      FoodList: this.props.food,
       filteredFoods: []
     };
     this.handleSearch = this.handleSearch.bind(this);
@@ -16,28 +16,37 @@ class Search extends Component {
   }
 
   handleSearch(event) {
+    event.preventDefault();
     console.log(event.target.value);
     this.setState({
       query: event.target.value
     });
   }
   handleSubmitSearch(event) {
-    console.log(event);
-    this.setState({});
+    event.preventDefault();
+    console.log(this.state.query);
+    const filteredFoods = [...this.state.FoodList];
+    filteredFoods.filter(food =>
+      food.name.toLowerCase().includes(this.state.query.toLowerCase())
+    );
+
+    console.log(filteredFoods);
+    this.setState({
+      FoodList: filteredFoods
+    });
   }
 
   render() {
     return (
       <div>
         <Container>
-          <Form>
+          <Form onSubmit={this.handleSubmitSearch}>
             <Form.Control
               size="lg"
               type="text"
               placeholder="Search"
-              onChange={this.handleSearch}
               value={this.state.query}
-              onSubmit={this.handleSubmitSearch}
+              onChange={this.handleSearch}
             />
             <Button type="submit" value="Submit">
               Search

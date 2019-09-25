@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import foods from "./foods.json";
 import "./components/FoodBox";
 import FoodBox from "./components/FoodBox";
@@ -21,6 +20,7 @@ class App extends Component {
       calories: 0,
       image: "",
       quantity: 0,
+      foodFormActive: false,
 
       newFoods: []
     };
@@ -29,6 +29,7 @@ class App extends Component {
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleQuantityChange = this.handleQuantityChange.bind(this);
     this.handleSubmitFood = this.handleSubmitFood.bind(this);
+    this.toggleFoodForm = this.toggleFoodForm.bind(this);
   }
   handleNameChange(event) {
     this.setState({
@@ -70,69 +71,80 @@ class App extends Component {
     console.log(this.state);
   }
 
+  toggleFoodForm(event) {
+    this.setState({
+      foodFormActive: !this.state.foodFormActive
+    });
+  }
+
   render() {
     return (
       <div className="App">
         <h2>Iron Nutrition</h2>
 
-        <Search />
+        <Search query={this.state.query} food={this.state.newFoods} />
 
-        {/* <AddFood /> */}
+        <Button onClick={this.toggleFoodForm}>Add Food</Button>
+        {this.state.foodFormActive && (
+          <Container>
+            <Form onSubmit={this.handleAddFood}>
+              <Form.Group>
+                <Form.Label>Name of Food:</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter food"
+                  value={this.state.name}
+                  onChange={this.handleNameChange}
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Calories</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="calories"
+                  value={this.state.calories}
+                  onChange={this.handleCaloriesChange}
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Image:</Form.Label>
+                <Form.Control
+                  type="url"
+                  placeholder="imageurl"
+                  value={this.state.image}
+                  onChange={this.handleImageChange}
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Quantity:</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="quantity"
+                  value={this.state.quantity}
+                  onChange={this.handleQuantityChange}
+                />
+              </Form.Group>
+              <Button onClick={this.handleSubmitFood} value="Submit">
+                Submit
+              </Button>
+            </Form>
+          </Container>
+        )}
 
         <Container>
-          <Form onSubmit={this.handleAddFood}>
-            <Form.Group>
-              <Form.Label>Name of Food:</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter food"
-                value={this.state.name}
-                onChange={this.handleNameChange}
-              />
-            </Form.Group>
+          {/* {foods.filter(food => (
+            <FoodBox foods={food} />
+          ))} */}
 
-            <Form.Group>
-              <Form.Label>Calories</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="calories"
-                value={this.state.calories}
-                onChange={this.handleCaloriesChange}
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Image:</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="imageurl"
-                value={this.state.image}
-                onChange={this.handleImageChange}
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Quantity:</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="quantity"
-                value={this.state.quantity}
-                onChange={this.handleQuantityChange}
-              />
-            </Form.Group>
-            <Button onClick={this.handleSubmitFood} value="Submit">
-              Submit
-            </Button>
-          </Form>
-        </Container>
-
-        <Container>
           {this.state.newFoods.map(food => (
             <FoodBox foods={food} />
           ))}
 
           {foods.map(food => (
-            <FoodBox foods={food} />
+            <FoodBox foods={food} key={food.name} />
           ))}
         </Container>
       </div>
